@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <title>Matador de Monstro</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,600" rel="stylesheet">
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+    <div id="app">
+        <div class="panel scores">
+            <div class="score">
+                <h1>Jogador</h1>
+                <div class="life-bar">
+                    <div class="life" :style="{width: width_jogador,  backgroundColor: life_jogador}"></div>
+                </div>
+                <div>{{vida_inicial_jogador}}</div>
+            </div>
+            <div class="score">
+                <h1>Monstro</h1>
+                <div class="life-bar">
+                    <div class="life" :style="{width: width_monstro, backgroundColor: life_monstro}"></div>
+                </div>
+                <div>{{vida_inicial_monstro}}</div>
+            </div>
+        </div>
+        <div class="panel result" v-show="panel_result">
+            <div v-show="ganhou" class="win">Você ganhou!!! :)</div>
+            <div v-show="perdeu" class="lose">Você perdeu! :(</div>
+        </div>
+        <div class="panel buttons">
+            <template v-if="comecar_jogo">
+                <button v-show="!gameOver" class="btn attack" @click="atacar">Ataque</button>
+                <button v-show="!gameOver" class="btn especial-attack" @click="especial">Ataque Especial</button>
+                <button v-show="!gameOver" class="btn heal" @click="curar">Curar</button>
+                <button class="btn give-up" @click="desistir">Desistir</button>
+            </template>
+            <button v-show="!comecar_jogo" class="btn new-game" @click="comecar_jogo = !comecar_jogo">Iniciar Jogo</button>
+        </div>
+        <div class="panel logs" v-if="panel_log">
+            <ul>
+                <template v-for="item in log">
+                    <li :class="{monster: corMonstro}">Monstro atingiu jogador com {{item.ataque_monstro}}.</li>
+                    <li :class="{player: corJogador}" v-if="item.ataque_jogador!=null">Jogador atingiu monstro com {{item.ataque_jogador}}.</li>
+                    <li :class="{player: corJogador}" v-else>Jogador recuperou {{item.curar_jogador}} de vida.</li>
+                </template>
+            </ul>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
